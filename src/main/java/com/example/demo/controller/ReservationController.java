@@ -38,8 +38,9 @@ public class ReservationController {
     }
 
     @GetMapping("/search")
-    public void searchAll(@RequestParam(required = false) Long userId,
+    public ResponseEntity<List<ReservationResponseDto>> searchAll(@RequestParam(required = false) Long userId,
                           @RequestParam(required = false) Long itemId) {
-        reservationService.searchAndConvertReservations(userId, itemId);
+        List<ReservationResponseDto> reservationResponseDtos = reservationService.searchAndConvertReservations(userId, itemId);
+        return new ResponseEntity<>(reservationResponseDtos, HttpStatus.OK);
     }
 }

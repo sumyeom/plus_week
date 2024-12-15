@@ -1,10 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ReservationResponseDto;
-import com.example.demo.entity.Item;
-import com.example.demo.entity.RentalLog;
-import com.example.demo.entity.Reservation;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
 import com.example.demo.exception.ReservationConflictException;
 import com.example.demo.repository.ItemRepository;
 import com.example.demo.repository.ReservationRepository;
@@ -14,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -79,8 +75,9 @@ public class ReservationService {
     }
 
     public List<Reservation> searchReservations(Long userId, Long itemId) {
+        return reservationRepository.searchReservationQuerydsl(userId, itemId);
 
-        if (userId != null && itemId != null) {
+        /*if (userId != null && itemId != null) {
             return reservationRepository.findByUserIdAndItemId(userId, itemId);
         } else if (userId != null) {
             return reservationRepository.findByUserId(userId);
@@ -88,7 +85,7 @@ public class ReservationService {
             return reservationRepository.findByItemId(itemId);
         } else {
             return reservationRepository.findAll();
-        }
+        }*/
     }
 
     private List<ReservationResponseDto> convertToDto(List<Reservation> reservations) {
