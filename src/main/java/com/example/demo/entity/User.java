@@ -2,7 +2,9 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.DynamicInsert;
 
+@DynamicInsert
 @Entity
 @Getter
 public class User {
