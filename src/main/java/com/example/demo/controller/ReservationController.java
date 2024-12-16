@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ReservationRentalLogResponseDto;
 import com.example.demo.dto.ReservationRequestDto;
 import com.example.demo.dto.ReservationResponseDto;
+import com.example.demo.dto.UpdateReservationRequestDto;
 import com.example.demo.service.ReservationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +21,20 @@ public class ReservationController {
     }
 
     @PostMapping
-    public void createReservation(@RequestBody ReservationRequestDto reservationRequestDto) {
-        reservationService.createReservation(reservationRequestDto.getItemId(),
+    public ResponseEntity<ReservationRentalLogResponseDto> createReservation(@RequestBody ReservationRequestDto reservationRequestDto) {
+        ReservationRentalLogResponseDto dto = reservationService.createReservation(reservationRequestDto.getItemId(),
                                             reservationRequestDto.getUserId(),
                                             reservationRequestDto.getStartAt(),
                                             reservationRequestDto.getEndAt());
+
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}/update-status")
-    public void updateReservation(@PathVariable Long id, @RequestBody String status) {
-        reservationService.updateReservationStatus(id, status);
+    public ResponseEntity<ReservationResponseDto> updateReservation(@PathVariable Long id, @RequestBody UpdateReservationRequestDto dto) {
+        ReservationResponseDto responseDto = reservationService.updateReservationStatus(id, dto.getStatus());
+
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 
     @GetMapping

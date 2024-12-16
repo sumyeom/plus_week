@@ -26,5 +26,8 @@ public class AdminService {
 
             userRepository.save(user);
         }*/
+        if(updatedCount != userIds.size()) {
+            throw new IllegalArgumentException("업데이트 실패");
+        }
     }
 }

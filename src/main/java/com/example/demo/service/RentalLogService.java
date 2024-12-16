@@ -14,10 +14,8 @@ public class RentalLogService {
     }
 
     @Transactional
-    public void save(RentalLog rentalLog) {
-        rentalLogRepository.save(rentalLog);
-        if (rentalLog == null) {
-            throw new RuntimeException();
-        }
+    public RentalLog save(RentalLog rentalLog) {
+        RentalLog savedRentalLog = rentalLogRepository.save(rentalLog);
+        return savedRentalLog;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.example.demo.constants.Role;
+import com.example.demo.constants.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
@@ -15,7 +17,9 @@ public class User {
     private String email;
     private String nickname;
     private String password;
-    private String status; // NORMAL, BLOCKED
+
+    @Enumerated(value = EnumType.STRING)
+    private UserStatus status; // NORMAL, BLOCKED
 
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.USER;
@@ -30,6 +34,6 @@ public class User {
     public User() {}
 
     public void updateStatusToBlocked() {
-        this.status = "BLOCKED";
+        this.status = UserStatus.of("BLOCKED");
     }
 }
