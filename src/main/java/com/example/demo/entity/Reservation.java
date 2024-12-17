@@ -20,7 +20,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
 
     private LocalDateTime startAt;
 
@@ -29,7 +29,7 @@ public class Reservation {
     @Enumerated(value = EnumType.STRING)
     private ReservationStatus status; // PENDING, APPROVED, CANCELED, EXPIRED
 
-    public Reservation(Item item, User user, ReservationStatus status, LocalDateTime startAt, LocalDateTime endAt) {
+    public Reservation(Item item, Users user, ReservationStatus status, LocalDateTime startAt, LocalDateTime endAt) {
         this.item = item;
         this.user = user;
         this.status = status;

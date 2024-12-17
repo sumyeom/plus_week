@@ -4,7 +4,8 @@ import com.example.demo.dto.Authentication;
 import com.example.demo.dto.LoginRequestDto;
 import com.example.demo.dto.UserRequestDto;
 import com.example.demo.dto.UserResponseDto;
-import com.example.demo.entity.User;
+import com.example.demo.entity.Users;
+import com.example.demo.entity.Users;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.util.PasswordEncoder;
 import jakarta.transaction.Transactional;
@@ -26,12 +27,12 @@ public class UserService {
         String encodedPassword = PasswordEncoder.encode(userRequestDto.getPassword());
         userRequestDto.updatePassword(encodedPassword);
 
-        User savedUser = userRepository.save(userRequestDto.toEntity());
+        Users savedUser = userRepository.save(userRequestDto.toEntity());
         return new UserResponseDto(savedUser.getId(), savedUser.getEmail(), savedUser.getNickname(), savedUser.getRole().toString());
     }
 
     public Authentication loginUser(LoginRequestDto loginRequestDto) {
-        User user = userRepository.findByEmail(loginRequestDto.getEmail());
+        Users user = userRepository.findByEmail(loginRequestDto.getEmail());
         if (user == null || !PasswordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않은 사용자 이름 혹은 잘못된 비밀번호");
         }

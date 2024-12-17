@@ -9,7 +9,8 @@ import org.hibernate.annotations.DynamicInsert;
 @DynamicInsert
 @Entity
 @Getter
-public class User {
+@Table(name = "users")
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,14 +25,14 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.USER;
 
-    public User(String role, String email, String nickname, String password) {
+    public Users(String role, String email, String nickname, String password) {
         this.role = Role.of(role);
         this.email = email;
         this.nickname = nickname;
         this.password = password;
     }
 
-    public User() {}
+    public Users() {}
 
     public void updateStatusToBlocked() {
         this.status = UserStatus.of("BLOCKED");

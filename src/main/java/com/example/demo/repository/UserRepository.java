@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findByEmail(String email);
+public interface UserRepository extends JpaRepository<Users, Long> {
+    Users findByEmail(String email);
 
     @Transactional
     @Modifying
-    @Query("update User u set u.status = 'BLOCKED' where u.id in :userIds")
+    @Query("update Users u set u.status = 'BLOCKED' where u.id in :userIds")
     int updateUserStatusBlocked(@Param("userIds") List<Long> userIds);
 
-    default User findByIdfOrElseThrow(Long id) {
+    default Users findByIdOrElseThrow(Long id) {
         return findById(id)
                 .orElseThrow(()->
                         new IllegalArgumentException("해당 ID에 맞는 값이 존재하지 않습니다."));

@@ -46,8 +46,8 @@ public class ReservationService {
             throw new ReservationConflictException("해당 물건은 이미 그 시간에 예약이 있습니다.");
         }
 
-        Item item = itemRepository.findByIdfOrElseThrow(itemId);
-        User user = userRepository.findByIdfOrElseThrow(userId);
+        Item item = itemRepository.findByIdOrElseThrow(itemId);
+        Users user = userRepository.findByIdOrElseThrow(userId);
         Reservation reservation = new Reservation(item, user, ReservationStatus.PENDING, startAt, endAt);
         Reservation savedReservation = reservationRepository.save(reservation);
 
@@ -68,7 +68,7 @@ public class ReservationService {
         List<Reservation> reservations = reservationRepository.findAllUserItem();
 
         return reservations.stream().map(reservation -> {
-            User user = reservation.getUser();
+            Users user = reservation.getUser();
             Item item = reservation.getItem();
 
             return new ReservationResponseDto(
@@ -118,7 +118,7 @@ public class ReservationService {
     // TODO: 7. 리팩토링
     @Transactional
     public ReservationResponseDto updateReservationStatus(Long reservationId, String status) {
-        Reservation reservation = reservationRepository.findByIdfOrElseThrow(reservationId);
+        Reservation reservation = reservationRepository.findByIdOrElseThrow(reservationId);
         ReservationStatus reservationStatus = ReservationStatus.valueOf(status);
 
 

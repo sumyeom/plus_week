@@ -1,6 +1,6 @@
 package com.example.demo.constants;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.Users;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
