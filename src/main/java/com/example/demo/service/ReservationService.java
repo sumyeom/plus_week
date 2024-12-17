@@ -55,6 +55,7 @@ public class ReservationService {
                 new ReservationResponseDto(savedReservation.getId(),
                         savedReservation.getUser().getNickname(),
                         savedReservation.getItem().getName(),
+                        savedReservation.getStatus(),
                         savedReservation.getStartAt(),
                         savedReservation.getEndAt());
 
@@ -75,6 +76,7 @@ public class ReservationService {
                     reservation.getId(),
                     user.getNickname(),
                     item.getName(),
+                    reservation.getStatus(),
                     reservation.getStartAt(),
                     reservation.getEndAt()
             );
@@ -109,6 +111,7 @@ public class ReservationService {
                         reservation.getId(),
                         reservation.getUser().getNickname(),
                         reservation.getItem().getName(),
+                        reservation.getStatus(),
                         reservation.getStartAt(),
                         reservation.getEndAt()
                 ))
@@ -143,6 +146,6 @@ public class ReservationService {
         }
 
         reservation.updateStatus(ReservationStatus.of(status));
-        return new ReservationResponseDto(reservation.getId(),reservation.getUser().getNickname(),reservation.getItem().getName(),reservation.getStartAt(),reservation.getEndAt());
+        return new ReservationResponseDto(reservation.getId(),reservation.getUser().getNickname(),reservation.getItem().getName(),reservation.getStatus(),reservation.getStartAt(),reservation.getEndAt());
     }
 }

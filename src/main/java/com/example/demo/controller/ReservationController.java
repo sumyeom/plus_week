@@ -5,6 +5,7 @@ import com.example.demo.dto.ReservationRequestDto;
 import com.example.demo.dto.ReservationResponseDto;
 import com.example.demo.dto.UpdateReservationRequestDto;
 import com.example.demo.service.ReservationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,9 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<ReservationRentalLogResponseDto> createReservation(@RequestBody ReservationRequestDto reservationRequestDto) {
+    public ResponseEntity<ReservationRentalLogResponseDto> createReservation(
+            @Valid  @RequestBody ReservationRequestDto reservationRequestDto
+    ) {
         ReservationRentalLogResponseDto dto = reservationService.createReservation(reservationRequestDto.getItemId(),
                                             reservationRequestDto.getUserId(),
                                             reservationRequestDto.getStartAt(),
@@ -31,7 +34,10 @@ public class ReservationController {
     }
 
     @PatchMapping("/{id}/update-status")
-    public ResponseEntity<ReservationResponseDto> updateReservation(@PathVariable Long id, @RequestBody UpdateReservationRequestDto dto) {
+    public ResponseEntity<ReservationResponseDto> updateReservation(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateReservationRequestDto dto
+    ) {
         ReservationResponseDto responseDto = reservationService.updateReservationStatus(id, dto.getStatus());
 
         return new ResponseEntity<>(responseDto,HttpStatus.OK);

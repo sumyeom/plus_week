@@ -28,7 +28,7 @@ public class Item {
     private Users manager;
 
     @Column(nullable = false, columnDefinition = "varchar(20) default 'PENDING'")
-    private String status = "PENDING";
+    private String status;
 
     public Item(String name, String description, Users manager, Users owner) {
         this.name = name;
@@ -38,4 +38,8 @@ public class Item {
     }
 
     public Item() {}
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
