@@ -50,21 +50,6 @@ jobs:
           source: "./build/libs/*.jar"
           target: "~/app.jar"
 
-      - name: Verify JAR file on server
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ec2-user
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            if [ -f ~/app.jar ]; then
-              echo "app.jar successfully copied."
-            else
-              echo "Error: app.jar not found."
-              exit 1
-            fi
-
       - name: Restart application
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -74,13 +59,18 @@ jobs:
           port: 22
           script_stop: true
           script: |
+            echo "Updating system and installing required packages..."
+            sudo yum update -y
+            sudo yum install -y java-21-amazon-corretto
+
             echo "Stopping any running Java processes..."
             for pid in $(pgrep java); do
               if ps -p $pid -o args= | grep -q 'java -jar'; then
-                echo "Terminating previous Java process (PID: $pid)..."
+                echo "Found Java process with 'java -jar' (PID: $pid). Terminating..."
                 kill -9 $pid
               fi
             done
+
             echo "Starting new application..."
             nohup java -jar ~/app.jar > ~/app.log 2>&1 &
             echo "Application started successfully."
