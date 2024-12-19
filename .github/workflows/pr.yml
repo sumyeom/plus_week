@@ -20,22 +20,34 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Export AWS Environment Variables
-        run: |
-          echo "Setting up AWS environment variables..."
-          export AWS_IAM_ACCESS_KEY=${{ secrets.AWS_IAM_ACCESS_KEY }}
-          export AWS_IAM_SECRET_KEY=${{ secrets.AWS_IAM_SECRET_KEY }}
-          export AWS_REGION=${{ secrets.AWS_REGION }}
-          export AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}
-          export DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-          export DATABASE_URL=${{ secrets.DATABASE_URL }}
-          export DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
-          echo "AWS environment variables set."
+      - name: Setup AWS Environment Variables
+        env:
+          AWS_IAM_ACCESS_KEY: ${{ secrets.AWS_IAM_ACCESS_KEY }}
+          AWS_IAM_SECRET_KEY: ${{ secrets.AWS_IAM_SECRET_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+        run: echo "AWS and Database environment variables are ready."
 
       - name: Debug environment variables
         run: |
-          echo "AWS Region: ${{ secrets.AWS_REGION }}"
-          echo "S3 Bucket: ${{ secrets.AWS_S3_BUCKET_NAME }}"
-          echo "Database Username: ${{ secrets.DATABASE_USERNAME }}"
+          echo "AWS Region: $AWS_REGION"
+          echo "S3 Bucket: $AWS_S3_BUCKET_NAME"
+          echo "Database Username: $DATABASE_USERNAME"
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+
       - name: gradlew test
         run: ./gradlew test
+        env:
+          AWS_IAM_ACCESS_KEY: ${{ secrets.AWS_IAM_ACCESS_KEY }}
+          AWS_IAM_SECRET_KEY: ${{ secrets.AWS_IAM_SECRET_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
