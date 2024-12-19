@@ -21,7 +21,7 @@ public class S3Service {
     private final AmazonS3 s3Client;
     private final AmazonS3 amazonS3;
 
-    @Value("${cloud.aws.s3.bucketName}")
+    @Value("${AWS_S3_BUCKET_NAME}")
     private String bucketName;
 
     @Transactional
