@@ -34,9 +34,8 @@ jobs:
 
       - name: Debug environment variables
         run: |
-          echo "AWS Region: $AWS_REGION"
-          echo "S3 Bucket: $AWS_S3_BUCKET_NAME"
-          echo "Database URL: $DATABASE_URL"
-          echo "Database Username: $DATABASE_USERNAME"
+          echo "AWS Region: ${{ secrets.AWS_REGION }}"
+          echo "S3 Bucket: ${{ secrets.AWS_S3_BUCKET_NAME }}"
+          echo "Database Username: ${{ secrets.DATABASE_USERNAME }}"
       - name: gradlew test
         run: ./gradlew test
