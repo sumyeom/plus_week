@@ -18,29 +18,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      - name: Export AWS Environment Variables
-        run: |
-          echo "Setting up AWS environment variables..."
-          export AWS_IAM_ACCESS_KEY=${{ secrets.AWS_IAM_ACCESS_KEY }}
-          export AWS_IAM_SECRET_KEY=${{ secrets.AWS_IAM_SECRET_KEY }}
-          export AWS_REGION=${{ secrets.AWS_REGION }}
-          export AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}
-          export DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-          export DATABASE_URL=${{ secrets.DATABASE_URL }}
-          export DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
-          echo "AWS environment variables set."
-
-      - name: Deploy with AWS CLI
-        run: |
-          echo "Interacting with AWS S3 bucket..."
-          aws s3 ls s3://${{ secrets.AWS_S3_BUCKET_NAME }}
-          echo "AWS S3 bucket verified."
-      - name: Debug environment variables
-        run: |
-          echo "AWS Region: $AWS_REGION"
-          echo "S3 Bucket: $AWS_S3_BUCKET_NAME"
-          echo "Database URL: $DATABASE_URL"
-          echo "Database Username: $DATABASE_USERNAME"
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
