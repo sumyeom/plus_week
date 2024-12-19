@@ -92,3 +92,9 @@ jobs:
           echo "Interacting with AWS S3 bucket..."
           aws s3 ls s3://${{ secrets.AWS_S3_BUCKET_NAME }}
           echo "AWS S3 bucket verified."
+      - name: Debug environment variables
+        run: |
+          echo "AWS Region: $AWS_REGION"
+          echo "S3 Bucket: $AWS_S3_BUCKET_NAME"
+          echo "Database URL: $DATABASE_URL"
+          echo "Database Username: $DATABASE_USERNAME"
