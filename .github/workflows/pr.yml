@@ -32,12 +32,6 @@ jobs:
           export DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
           echo "AWS environment variables set."
 
-      - name: Deploy with AWS CLI
-        run: |
-          echo "Interacting with AWS S3 bucket..."
-          aws s3 ls s3://${{ secrets.AWS_S3_BUCKET_NAME }}
-          echo "AWS S3 bucket verified."
-
       - name: Debug environment variables
         run: |
           echo "AWS Region: $AWS_REGION"
