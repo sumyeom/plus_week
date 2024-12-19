@@ -48,7 +48,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           source: "./build/libs/*.jar"
-          target: "~/app.jar"
+          target: "~"
 
       - name: Restart application
         uses: appleboy/ssh-action@v0.1.6
