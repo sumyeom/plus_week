@@ -79,12 +79,12 @@ jobs:
         run: |
           echo "Setting up AWS environment variables..."
           export AWS_IAM_ACCESS_KEY=${{ secrets.AWS_IAM_ACCESS_KEY }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_IAM_SECRET_KEY }}
+          export AWS_IAM_SECRET_KEY=${{ secrets.AWS_IAM_SECRET_KEY }}
           export AWS_REGION=${{ secrets.AWS_REGION }}
           export AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}
           export DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
           export DATABASE_URL=${{ secrets.DATABASE_URL }}
-          export DATABASE_USERNAME=${{ DATABASE_USERNAME }}
+          export DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
           echo "AWS environment variables set."
 
       - name: Deploy with AWS CLI
