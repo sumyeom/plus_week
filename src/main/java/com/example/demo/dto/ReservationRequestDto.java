@@ -17,7 +17,11 @@ public class ReservationRequestDto {
     @NotNull
     private LocalDateTime endAt;
 
-    public ReservationRequestDto(long l, long l1, LocalDateTime startAt, LocalDateTime endAt) {
+    public ReservationRequestDto(Long itemId, Long userId, LocalDateTime startAt, LocalDateTime endAt) {
+        this.itemId = itemId;
+        this.userId = userId;
+        this.startAt = startAt;
+        this.endAt = endAt;
     }
 
     public ReservationRequestDto() {

@@ -24,7 +24,7 @@ public class ItemService {
         Users manager = userRepository.findByIdOrElseThrow(managerId);
 
         Item item = new Item(name, description, owner, manager);
-        item.setStatus(null);
+        //item.setStatus(null);
         Item createdItem = itemRepository.save(item);
         return new ItemResponseDto(createdItem.getId(),createdItem.getName(),createdItem.getDescription(),createdItem.getManager().getId(),createdItem.getOwner().getId());
     }

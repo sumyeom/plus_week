@@ -18,9 +18,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -163,6 +165,29 @@ class ReservationControllerTest {
     }
 
     @Test
-    void searchAll() {
+    @DisplayName("아이템과 유저로 예약 조회")
+    void searchAllTest() throws Exception {
+        //given
+        Long userId = 1L;
+        Long itemId = 1L;
+        LocalDateTime startDate = LocalDateTime.now().minusDays(7);
+        LocalDateTime endDate = LocalDateTime.now().plusDays(7);
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        List<ReservationResponseDto> dtos = List.of(
+                new ReservationResponseDto(
+                        1L,"name","itemName",ReservationStatus.PENDING,startDate,endDate),
+                new ReservationResponseDto(
+                        2L,"name2","itemName2",ReservationStatus.PENDING,startDate,endDate
+                ));
+        when(reservationService.searchAndConvertReservations(userId,itemId))
+                .thenReturn(dtos);
+        //then
+        mockMvc.perform(get("/reservations/search")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .sessionAttr(GlobalConstants.USER_AUTH,TEST_USER)
+                        .param("userId",String.valueOf(userId))
+                        .param("itemId",String.valueOf(itemId)))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$[1].id").value(2L));
     }
 }

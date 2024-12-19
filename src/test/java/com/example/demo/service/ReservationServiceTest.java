@@ -142,6 +142,13 @@ class ReservationServiceTest {
 
     @Test
     void searchAndConvertReservations() {
+        // given
+        Long itemId = 1L;
+        Long userId = 1L;
+
+        List<ReservationResponseDto> resultDtos = reservationService.searchAndConvertReservations(itemId,userId);
+
+        assertNotNull(resultDtos);
     }
 
     @Test
@@ -172,8 +179,9 @@ class ReservationServiceTest {
         assertEquals("itemName", reservation.getItem().getName());
     }
 
+
     @Test
-    void updateReservationStatus_validInput_Approve_success() {
+    void updateReservationStatus_validInput_APPROVED_success() {
         // given
         Long reservationId = 1L;
         String status = ReservationStatus.APPROVED.toString();
@@ -193,6 +201,146 @@ class ReservationServiceTest {
         assertNotNull(responseDto);
         assertEquals("owner",responseDto.getNickname());
         assertEquals(ReservationStatus.APPROVED, responseDto.getStatus());
+
+    }
+
+    @Test
+    void updateReservationStatus_validInput_APPROVED_Failed() {
+        // given
+        Long reservationId = 1L;
+        String status = ReservationStatus.APPROVED.toString();
+
+        LocalDateTime startAt = LocalDateTime.now().minusDays(7);
+        LocalDateTime endAt = LocalDateTime.now().plusDays(7);
+        Users owner = new Users("user", "a@com", "owner", "0000");
+        Users manager = new Users("user", "b@com", "manager", "0000");
+        Item item = new Item("itemName", "description", manager, owner);
+        Reservation reservation = new Reservation(item,owner, ReservationStatus.CANCELED,startAt,endAt);
+        when(reservationRepository.findByIdOrElseThrow(reservationId)).thenReturn(reservation);
+
+        // when
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()->
+                reservationService.updateReservationStatus(reservationId, status));
+
+        // then
+        assertEquals("PENDING 상태만 APPROVED로 변경 가능합니다.", exception.getMessage());
+
+    }
+
+    @Test
+    void updateReservationStatus_validInput_CANCELED_success() {
+        // given
+        Long reservationId = 1L;
+        String status = ReservationStatus.CANCELED.toString();
+
+        LocalDateTime startAt = LocalDateTime.now().minusDays(7);
+        LocalDateTime endAt = LocalDateTime.now().plusDays(7);
+        Users owner = new Users("user", "a@com", "owner", "0000");
+        Users manager = new Users("user", "b@com", "manager", "0000");
+        Item item = new Item("itemName", "description", manager, owner);
+        Reservation reservation = new Reservation(item,owner, ReservationStatus.EXPIRED,startAt,endAt);
+        when(reservationRepository.findByIdOrElseThrow(reservationId)).thenReturn(reservation);
+
+        // when
+        ReservationResponseDto responseDto = reservationService.updateReservationStatus(reservationId, status);
+
+        // then
+        assertNotNull(responseDto);
+        assertEquals("owner",responseDto.getNickname());
+        assertEquals(ReservationStatus.CANCELED, responseDto.getStatus());
+
+    }
+
+    @Test
+    void updateReservationStatus_validInput_CANCELED_Failed() {
+        // given
+        Long reservationId = 1L;
+        String status = ReservationStatus.CANCELED.toString();
+
+        LocalDateTime startAt = LocalDateTime.now().minusDays(7);
+        LocalDateTime endAt = LocalDateTime.now().plusDays(7);
+        Users owner = new Users("user", "a@com", "owner", "0000");
+        Users manager = new Users("user", "b@com", "manager", "0000");
+        Item item = new Item("itemName", "description", manager, owner);
+        Reservation reservation = new Reservation(item,owner, ReservationStatus.PENDING,startAt,endAt);
+        when(reservationRepository.findByIdOrElseThrow(reservationId)).thenReturn(reservation);
+
+        // when
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()->
+                reservationService.updateReservationStatus(reservationId, status));
+
+        // then
+        assertEquals("EXPIRED 상태인 예약은 취소할 수 없습니다.", exception.getMessage());
+
+    }
+
+    @Test
+    void updateReservationStatus_validInput_EXPIRED_success() {
+        // given
+        Long reservationId = 1L;
+        String status = ReservationStatus.EXPIRED.toString();
+
+        LocalDateTime startAt = LocalDateTime.now().minusDays(7);
+        LocalDateTime endAt = LocalDateTime.now().plusDays(7);
+        Users owner = new Users("user", "a@com", "owner", "0000");
+        Users manager = new Users("user", "b@com", "manager", "0000");
+        Item item = new Item("itemName", "description", manager, owner);
+        Reservation reservation = new Reservation(item,owner, ReservationStatus.PENDING,startAt,endAt);
+        when(reservationRepository.findByIdOrElseThrow(reservationId)).thenReturn(reservation);
+
+        // when
+        ReservationResponseDto responseDto = reservationService.updateReservationStatus(reservationId, status);
+
+        // then
+        assertNotNull(responseDto);
+        assertEquals("owner",responseDto.getNickname());
+        assertEquals(ReservationStatus.EXPIRED, responseDto.getStatus());
+
+    }
+
+    @Test
+    void updateReservationStatus_validInput_EXPIRED_Failed() {
+        // given
+        Long reservationId = 1L;
+        String status = ReservationStatus.EXPIRED.toString();
+
+        LocalDateTime startAt = LocalDateTime.now().minusDays(7);
+        LocalDateTime endAt = LocalDateTime.now().plusDays(7);
+        Users owner = new Users("user", "a@com", "owner", "0000");
+        Users manager = new Users("user", "b@com", "manager", "0000");
+        Item item = new Item("itemName", "description", manager, owner);
+        Reservation reservation = new Reservation(item,owner, ReservationStatus.CANCELED,startAt,endAt);
+        when(reservationRepository.findByIdOrElseThrow(reservationId)).thenReturn(reservation);
+
+        // when
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()->
+                reservationService.updateReservationStatus(reservationId, status));
+
+        // then
+        assertEquals("PENDING 상태만 EXPIRED로 변경 가능합니다.", exception.getMessage());
+
+    }
+
+    @Test
+    void updateReservationStatus_InvalidInput_Failed() {
+        // given
+        Long reservationId = 1L;
+        String status = "INVALID";
+
+        LocalDateTime startAt = LocalDateTime.now().minusDays(7);
+        LocalDateTime endAt = LocalDateTime.now().plusDays(7);
+        Users owner = new Users("user", "a@com", "owner", "0000");
+        Users manager = new Users("user", "b@com", "manager", "0000");
+        Item item = new Item("itemName", "description", manager, owner);
+        Reservation reservation = new Reservation(item,owner, ReservationStatus.CANCELED,startAt,endAt);
+        when(reservationRepository.findByIdOrElseThrow(reservationId)).thenReturn(reservation);
+
+        // when
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()->
+                reservationService.updateReservationStatus(reservationId, status));
+
+        // then
+        assertEquals("No enum constant com.example.demo.constants.ReservationStatus."+status, exception.getMessage());
 
     }
 }

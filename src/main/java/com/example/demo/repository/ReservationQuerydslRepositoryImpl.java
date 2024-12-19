@@ -21,13 +21,13 @@ public class ReservationQuerydslRepositoryImpl implements ReservationQuerydslRep
         QItem item = QItem.item;
         QReservation reservation = QReservation.reservation;
 
-        BooleanExpression nameCondition = userId != null ? user.id.eq(userId) : null;
-        BooleanExpression itemCondition = itemId != null ? item.id.eq(itemId) : null;
+        BooleanExpression userCondition = userId != null ? reservation.user.id.eq(userId) : null;
+        BooleanExpression itemCondition = itemId != null ? reservation.item.id.eq(itemId) : null;
 
         return jpaQueryFactory.selectFrom(reservation)
-                .join(reservation.user).fetchJoin()
-                .join(reservation.item).fetchJoin()
-                .where(nameCondition,itemCondition)
+                .join(reservation.user, user).fetchJoin()
+                .join(reservation.item, item).fetchJoin()
+                .where(userCondition,itemCondition)
                 .fetch();
     }
 }
