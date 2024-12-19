@@ -74,3 +74,4 @@ jobs:
             echo "Starting new application..."
             nohup java -jar ~/app.jar > ~/app.log 2>&1 &
             echo "Application started successfully."
+
